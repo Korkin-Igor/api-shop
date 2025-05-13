@@ -28,10 +28,6 @@ ___
         Через команду <b><i>docker-compose up -d --build</i></b> запустите docker-compose.
     </li>
     <li>
-        Далее нужно накатить миграции, используя в терминале команду
-        <b><i>docker exec -it laravel-shop-app php artisan migrate:fresh --seed</i></b>.
-    </li>
-    <li>
         Готово! Теперь проект доступен по адресу <i>http://localhost</i> <br>
         Adminer доступен по адресу <i>http://localhost:8080</i>
     </li>

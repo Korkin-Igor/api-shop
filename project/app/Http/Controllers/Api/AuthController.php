@@ -18,7 +18,7 @@ class AuthController extends Controller
         return $request->user()->is_admin ? true : false;
     }
 
-    public function signup(StoreUserRequest $request): string
+    public function signup(StoreUserRequest $request)
     {
         // авторизованный пользователь не имеет доступа к регистрации
         if (Request::header('Authorization')) {
@@ -26,10 +26,9 @@ class AuthController extends Controller
                 'message' => 'Forbidden for you'
             ], 403);
         }
-        User::query()->create($request->all());
+        $user = User::query()->create($request->all());
         // сразу для этого юзера делаю корзину
-        Cart::query()->create(['user_id' => Auth::id()]);
-        $user = User::query()->where('email', $request->email)->first();
+        Cart::query()->create(['user_id' => $user->id]);
         return response()->json([
             'user_token' => $user->createToken('token')->plainTextToken
         ], 201);
