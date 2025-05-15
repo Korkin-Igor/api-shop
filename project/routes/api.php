@@ -24,7 +24,15 @@ Route::get('/unauthorized', [AuthController::class, 'unauthorized'])
 Route::middleware('auth:sanctum')->group(function () {
 
     // Админ
-    Route::apiResource('/product', ProductController::class);
+    // create, update, delete для product
+
+    Route::post('/product', [ProductController::class, 'store']);
+
+    Route::patch('/product/{id}', [ProductController::class, 'update'])
+        ->where('id', '[0-9]+');
+
+    Route::delete('/product/{id}', [ProductController::class, 'destroy'])
+        ->where('id', '[0-9]+');
 
     // Пользователь (корзина)
 

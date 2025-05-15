@@ -5,72 +5,28 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\LoginUserRequest;
 use App\Http\Requests\Api\StoreUserRequest;
-use App\Models\Cart;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Services\UserService;
 
 class AuthController extends Controller
 {
-    static public function isAdmin(\Illuminate\Http\Request $request): bool
+
+    public function signup(UserService $userService, StoreUserRequest $request)
     {
-        return $request->user()->is_admin ? true : false;
+        return $userService->signup($request);
     }
 
-    public function signup(StoreUserRequest $request)
+    public function login(UserService $userService, LoginUserRequest $request)
     {
-        // авторизованный пользователь не имеет доступа к регистрации
-        if (Request::header('Authorization')) {
-            return response()->json([
-                'message' => 'Forbidden for you'
-            ], 403);
-        }
-        $user = User::query()->create($request->all());
-        // сразу для этого юзера делаю корзину
-        Cart::query()->create(['user_id' => $user->id]);
-        return response()->json([
-            'user_token' => $user->createToken('token')->plainTextToken
-        ], 201);
+        return $userService->login($request);
     }
 
-    public function login(LoginUserRequest $request)
+    public function logout(UserService $userService)
     {
-        // авторизованный пользователь не имеет доступа к логину
-        if (Request::header('Authorization')) {
-            return response()->json([
-                'message' => 'Forbidden for you'
-            ], 403);
-        }
-
-        if (!Auth::attempt($request->all())) {
-            return response()->json([
-                'message' => 'Auth failed'
-            ], 401);
-        }
-        $user = Auth::user();
-
-        // удаляем старые токены этого юзера если таковы имеются
-        $userId = $user['id'];
-        DB::table('personal_access_tokens')->where('tokenable_id', $userId)->delete();
-
-        return response()->json([
-            'user_token' => $user->createToken('token')->plainTextToken
-        ]);
+        return $userService->logout();
     }
 
-    public function logout()
+    public function unauthorized(UserService $userService)
     {
-        Auth::user()->currentAccessToken()->delete();
-        return response()->json([
-            'message' => 'logout'
-        ]);
-    }
-
-    public function unauthorized()
-    {
-        return response()->json([
-            'message' => 'Login failed'
-        ], 403);
+        return $userService->unauthorized();
     }
 }
