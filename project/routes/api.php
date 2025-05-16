@@ -37,11 +37,13 @@ Route::middleware('auth:sanctum')->group(function () {
     // Пользователь (корзина)
 
     // добавление
-    Route::post('/cart/{product_id}', [CartItemController::class, 'store']);
+    Route::post('/cart/{product_id}', [CartItemController::class, 'store'])
+        ->where('product_id', '[0-9]+');
     // просмотр
     Route::get('/cart', [CartItemController::class, 'index']);
     // удаление товара из корзины
-    Route::delete('/cart/{product_id}', [CartItemController::class, 'destroy']);
+    Route::delete('/cart/{product_id}', [CartItemController::class, 'destroy'])
+        ->where('product_id', '[0-9]+');
     // оформление заказа
     Route::post('/order', [CartController::class, 'store']);
     // просмотр заказов

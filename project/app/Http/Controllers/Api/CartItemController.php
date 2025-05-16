@@ -43,7 +43,7 @@ class CartItemController extends Controller
      */
     public function destroy(CartItemService $cartItemService, Request $request, CartItem $cartItem)
     {
-        if (auth()->user()->can('delete')) {
+        if (auth()->user()->can('delete', $cartItem)) {
             return $cartItemService->destroy($request);
         } else {
             return response()->json([
