@@ -31,10 +31,16 @@ ___
         Через команду <code>docker compose up -d --build</code> запустите <i>docker compose</i>.
     </li>
     <li>
-        Готово! Теперь проект доступен по адресу <a link="http://localhost">localhost</a> <br>
-        Adminer доступен по адресу <a link="http://localhost:8080">localhost:8080</a>
+        Создайте структуру БД, заполненную тестовыми данными командой <code>docker compose exec app php artisan migrate --seed</code>.
     </li>
     <li>
-        Чтобы остановить контейнеры введите команду <code>docker compose down</code>
+        Сгенерируйте ключ приложения командой <code>docker compose exec app php artisan key:generate</code>.
+    </li>
+    <li>
+        Готово! Теперь проект доступен по адресу <a link="http://localhost:8000">localhost:8000</a> <br>
+        Adminer доступен по адресу <a link="http://localhost:8080">localhost:8080</a>.
+    </li>
+    <li>
+        Чтобы остановить контейнеры введите команду <code>docker compose down</code>.
     </li>
 </ol>

@@ -15,34 +15,9 @@ services:
       DB_DATABASE: ${DB_DATABASE}
       DB_USERNAME: ${DB_USERNAME}
       DB_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - ../project:/var/www/html
     working_dir: /var/www/html
     ports:
       - "9000"
-    networks:
-      - laravel-network
-
-  migrator:
-    build:
-      context: ..
-      dockerfile: deploy/Dockerfile
-    container_name: laravel-shop-migrator
-    restart: "no"
-    environment:
-      APP_ENV: ${APP_ENV}
-      APP_DEBUG: ${APP_DEBUG}
-      DB_CONNECTION: ${DB_CONNECTION}
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_DATABASE: ${DB_DATABASE}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
-    volumes:
-      - ../project:/var/www/html
-    depends_on:
-      - db
-    command: sh -c "sleep 5 && php artisan migrate --seed"
     networks:
       - laravel-network
 
