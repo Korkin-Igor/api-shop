@@ -3,4 +3,3 @@
 .git
 .env
 docker-compose.yml
-nginx/
